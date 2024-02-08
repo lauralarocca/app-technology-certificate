@@ -6,7 +6,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.moonlab.certification.modules.students.dto.StudentCertificationAnswerDTO;
 import br.com.moonlab.certification.modules.students.dto.VerifyHasCertificationDTO;
+import br.com.moonlab.certification.modules.students.entities.CertificationStudentEntity;
+import br.com.moonlab.certification.modules.students.services.StudentCertificationAnswersUseCase;
 import br.com.moonlab.certification.modules.students.services.VerifyIfHasCertificationService;
 
 @RestController
@@ -15,6 +18,9 @@ public class StudentController {
 
     @Autowired
     private VerifyIfHasCertificationService verifyIfHasCertificationService;
+
+    @Autowired
+    private StudentCertificationAnswersUseCase studentCertificationAnswersUseCase;
 
     @PostMapping("/verifyIfHasCertification")
     public String verifyIfHasCertification(@RequestBody VerifyHasCertificationDTO verifyHasCertificationDTO) {
@@ -26,6 +32,12 @@ public class StudentController {
         }
 
         return "Usuário pode fazer a prova";
+    }
+
+    @PostMapping("/certification/answer")
+    public CertificationStudentEntity certificationAnswer(
+            @RequestBody StudentCertificationAnswerDTO studentCertificationAnswerDTO) throws Exception {
+        return this.studentCertificationAnswersUseCase.execute(studentCertificationAnswerDTO);
     }
 
 }
